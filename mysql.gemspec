@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
 	s.name = %q{mysql}
-	s.version = "2.8"
+	s.version = "2.8.0"
 	
 	s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
 	s.authors = ['TOMITA Masahiro', 'Elia Schito', 'Michael Platov']
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
 	s.files = [ "COPYING", "COPYING.ja", "README.html", "README_ja.html", "extconf.rb", "mysql.c", "test.rb", "tommy.css", "mysql.gemspec"]
 	s.has_rdoc = false
 	s.require_paths = ["lib"]
-	s.rubygems_version = %q{1.3.0}
+	s.rubygems_version = %q{1.3.1}
 	s.required_ruby_version = '>= 1.8.6'
 	s.summary = 'MySQL/Ruby provides the same functions for Ruby programs that the MySQL C API provides for C programs.'
 	s.homepage = 'http://www.tmtm.org/en/mysql/ruby/'

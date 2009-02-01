@@ -3,6 +3,7 @@ MySQL/Ruby
 
 This is a the classic Ruby C wrapper for MySQL (v.2.8) repackaged as a gem which will build without passing any extra parameters on many system.
 It relies on the availability in path of the right `mysql_config` executable.
+This gem is Ruby 1.9 compatible
 
 Installation
 ------------
@@ -14,7 +15,7 @@ Run the following if you haven't already:
 
 Install the gem(s):
 
-`sudo gem install elia-mysql`
+`sudo gem install mplatov-mysql`
 
 
 Credits
