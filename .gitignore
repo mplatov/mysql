@@ -1,2 +1,6 @@
 gems/*
 *.tmproj
+Makefile
+error_const.h
+mkmf.log
+*.gem

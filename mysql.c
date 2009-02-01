@@ -248,7 +248,6 @@ static VALUE real_connect(int argc, VALUE* argv, VALUE klass)
     pp = NILorINT(port);
     s = NILorSTRING(sock);
 
-    rb_thread_stop_timer();
     obj = Data_Make_Struct(klass, struct mysql, 0, free_mysql, myp);
 #if MYSQL_VERSION_ID >= 32200
     mysql_init(&myp->handler);
@@ -259,10 +258,8 @@ static VALUE real_connect(int argc, VALUE* argv, VALUE klass)
     if (mysql_real_connect(&myp->handler, h, u, p, pp, s) == NULL)
 #endif
     {
-        rb_thread_start_timer();
         mysql_raise(&myp->handler);
     }
-    rb_thread_start_timer();
 
     myp->handler.reconnect = 0;
     myp->connection = Qtrue;
@@ -326,12 +323,9 @@ static VALUE real_connect2(int argc, VALUE* argv, VALUE obj)
     pp = NILorINT(port);
     s = NILorSTRING(sock);
 
-    rb_thread_stop_timer();
     if (mysql_real_connect(m, h, u, p, d, pp, s, f) == NULL) {
-        rb_thread_start_timer();
         mysql_raise(m);
     }
-    rb_thread_start_timer();
     m->reconnect = 0;
     GetMysqlStruct(obj)->connection = Qtrue;
 
@@ -1389,12 +1383,12 @@ static VALUE stmt_execute(int argc, VALUE *argv, VALUE obj)
                     s->param.bind[i].buffer = &(s->param.buffer[i]);
                     t.second_part = 0;
                     t.neg = 0;
-                    t.second = FIX2INT(RARRAY(a)->ptr[0]);
-                    t.minute = FIX2INT(RARRAY(a)->ptr[1]);
-                    t.hour = FIX2INT(RARRAY(a)->ptr[2]);
-                    t.day = FIX2INT(RARRAY(a)->ptr[3]);
-                    t.month = FIX2INT(RARRAY(a)->ptr[4]);
-                    t.year = FIX2INT(RARRAY(a)->ptr[5]);
+                    t.second = FIX2INT(RARRAY_PTR(a)[0]);
+                    t.minute = FIX2INT(RARRAY_PTR(a)[1]);
+                    t.hour = FIX2INT(RARRAY_PTR(a)[2]);
+                    t.day = FIX2INT(RARRAY_PTR(a)[3]);
+                    t.month = FIX2INT(RARRAY_PTR(a)[4]);
+                    t.year = FIX2INT(RARRAY_PTR(a)[5]);
                     *(MYSQL_TIME*)&(s->param.buffer[i]) = t;
                 } else if (CLASS_OF(argv[i]) == cMysqlTime) {
                     MYSQL_TIME t;

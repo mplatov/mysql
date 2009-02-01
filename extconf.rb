@@ -1,27 +1,24 @@
 require 'mkmf'
 
+mc = with_config('mysql-config')
+if mc
+  mysql_config_path = mc
+else # use defaults
+  if /mswin32/ =~ RUBY_PLATFORM
+  else
+    mysql_config_path = `which mysql_config`.chomp
+    mysql_config_path = `which mysql_config5`.chomp if mysql_config_path.nil? # for mysql from macports
+  end
+end
+
 if /mswin32/ =~ RUBY_PLATFORM
   inc, lib = dir_config('mysql')
   exit 1 unless have_library("libmysql")
 
-elsif mc = with_config('mysql-config') or
-      not((mysql_config_path = `which mysql_config`.chomp).empty?) and 
-      File.exists?(mysql_config_path) then
-  
-  mc = 'mysql_config' if mc == true or not(mysql_config_path.empty?)
-  
-  cflags = `#{mc} --cflags`.chomp
+elsif not(mysql_config_path.empty?) and File.exists?(mysql_config_path) then
+  cflags = `#{mysql_config_path} --cflags`.chomp
   exit 1 if $? != 0
-  libs = `#{mc} --libs`.chomp
-  exit 1 if $? != 0
-  $CPPFLAGS += ' ' + cflags
-  $libs = libs + " " + $libs
-elsif not((mysql_config_path = `which mysql_config`.chomp).empty?) and 
-      File.exists?(mysql_config_path)
-  mc = 'mysql_config'
-  cflags = `#{mc} --cflags`.chomp
-  exit 1 if $? != 0
-  libs = `#{mc} --libs`.chomp
+  libs = `#{mysql_config_path} --libs`.chomp
   exit 1 if $? != 0
   $CPPFLAGS += ' ' + cflags
   $libs = libs + " " + $libs
